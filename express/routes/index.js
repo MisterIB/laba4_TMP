@@ -15,11 +15,11 @@ router.post('/signin', async (req, res) => {
   try {
     
     const user = await db.getUser(req.body.username)
-    if (user === null) throw `Couldn't get user`
+    if (user === null) throw `Не удалось получить информацию о пользователе`
     if (!bcrypt.compareSync(req.body.password, user.hash_password))
       return res.status(401).json({
       accessToken: null,
-      message: "Invalid Password!",
+      message: "Неверный пароль!",
   });
 
   const token = jwt.sign({ id: user.id,  role: user.access_right}, authConfig.secret(), {
@@ -38,7 +38,7 @@ router.post('/signin', async (req, res) => {
     res.status(201)
   } catch(err) {
     console.log(err)
-    res.status(400).send({error: true, message: `Couldn't sign in`})
+    res.status(400).send({error: true, message: `Не удалось войти`})
   }
 });
 
@@ -50,23 +50,23 @@ router.post('/register', async (req, res) => {
     const user = await db.createUser(username, email, hashedPassword)
     if (user === null) throw `Couldn't save user to database`
 
-    res.status(201).send({error: false})
+    res.status(201).send({error: false, message: `Регистрация прошла успешно`})
   } catch (err) {
     console.log(err)
-    res.status(400).send({error: true, message: `Couldn't register`})
+    res.status(400).send({error: true, message: `Не удалось зарегистрироваться`})
   }
 });
 
 router.post('/signout', async (req, res) => {
   try {
     res.clearCookie('access_token')
-    res.send({error: false})
+    res.send({error: false, message: `Вы успешно вышли`})
   } catch (err) {
     console.log(err)
-    res.status(400).send({error: true, message: `Couldn't sign out.`})
+    res.status(400).send({error: true, message: `Не удалось выйти из системы`})
   }
 })
-
+/*
 router.get('/items', [authJwt.verifyToken], async (req, res) => {
   try {
     const items = await db.getItems()
@@ -128,7 +128,7 @@ router.delete('/items/:id', [authJwt.verifyToken], async (req, res) => {
     console.log(err)
     res.status(400).send({error: true, message: `Couldn't delete items`})
   }
-})
+})*/
 
 router.get('/cars', [authJwt.verifyToken], async (req, res) => {
   try {
@@ -137,30 +137,29 @@ router.get('/cars', [authJwt.verifyToken], async (req, res) => {
     res.status(200).send(cars)
   } catch (err) {
     console.log(err)
-    res.status(400).send({error: true, message: `Couldn't get cars`})
+    res.status(400).send({error: true, message: `Не удалось получить информацию об автомобилях`})
   }
 })
 
 router.post('/cars', [authJwt.verifyToken], async (req, res) => {
   try {
-    const { model, plate, color, RCmodel, MDSmodel, OSCmodel, userId } = req.body
-    const car = await db.addCar(model, plate, color, RCmodel, MDSmodel, OSCmodel, userId)
-    res.status(200).send(car)
+    const { model, plate, color, RCmodel, MDSmodel, OCSmodel, userId } = req.body
+    const car = await db.addCar(model, plate, color, RCmodel, MDSmodel, OCSmodel, userId)
+    res.status(201).send(car)
   } catch (err) {
     console.log(err)
-    res.status(400).send({error: true, message: `Couldn't add car`})
+    res.status(400).send({error: true, message: `Не удалось добавить автомобиль`})
   }
 })
 
 router.delete('/cars', [authJwt.verifyToken], async (req, res) => {
   try {
     const id = req.query.carId
-    console.log(id)
     const car = await db.deleteCar(id)
-    res.status(200).send(car)
+    res.status(200).send({error: false, message:  `Автомобиль успешно удален`})
   } catch (err) {
     console.log(err)
-    res.status(400).send({error: true, message: `Couldn't delete car`})
+    res.status(400).send({error: true, message: `Не удалось удалить автомобиль`})
   }
 })
 
@@ -168,7 +167,7 @@ router.get('/cars/:id', [authJwt.verifyToken], async (req, res) => {
   try {
     const id = req.params.id
     const car = await db.getCar(id)
-    if (car === null) throw `Couldn't get car`
+    if (car === null) throw `Не удалось получить информацию об автомобиле`
     res.status(200).send({
       id: car.id,
       model: car.model,
@@ -177,15 +176,15 @@ router.get('/cars/:id', [authJwt.verifyToken], async (req, res) => {
     })
   } catch (err) {
     console.log(err)
-    res.status(400).send({error: true, message: `Couldn't get car`})
+    res.status(400).send({error: true, message: `Не удалось получить информацию об автомобиле`})
   }
 })
 
-router.get('/route_computer/:id', [authJwt.verifyToken],  async (req, res) => {
+router.get('/route_computer/:id', [authJwt.verifyToken], async (req, res) => {
   try {
     const id = req.params.id
     const rc = await db.getRC(id)
-    if (rc === null) throw `Couldn't get route computer`
+    if (rc === null) throw `Не удалось получить информацию о маршрутном компьютере`
     res.status(200).send({
       id: rc.id,
       model: rc.model,
@@ -194,19 +193,19 @@ router.get('/route_computer/:id', [authJwt.verifyToken],  async (req, res) => {
     })
   } catch (err) {
     console.log(err)
-    res.status(400).send({error: true, message: `Couldn't get route computer`})
+    res.status(400).send({error: true, message: `Не удалось получить информацию о маршрутном компьютере`})
   }
 })
 
-router.put('/route_computer/:id', [authJwt.verifyToken], async (req, res) => {
+router.put('/route_computer/:id',  [authJwt.verifyToken], async (req, res) => {
   try {
     const id = req.params.id
     const { model, fuel_consumption, mileage } = req.body
     const rc = await db.updateRC(id, model, fuel_consumption, mileage)
-    res.status(200).send(rc)
+    res.status(200).send({error: false, message: `Данные успешно обновлены`})
   } catch (err) {
     console.log(err)
-    res.status(400).send({error: true, message: `Couldn't put route computer`})
+    res.status(400).send({error: true, message: `Не удалось обновить данные`})
   }
 })
 
@@ -214,7 +213,7 @@ router.get('/onboard_control/:id', [authJwt.verifyToken], async (req, res) => {
   try {
     const id = req.params.id
     const ocs = await db.getOCS(id)
-    if (ocs === null) throw `Couldn't get onboard control system`
+    if (ocs === null) throw `Не удалось получить информацию о бортовой системе контроля`
     res.status(200).send({
       id: ocs.id,
       model: ocs.model,
@@ -228,7 +227,7 @@ router.get('/onboard_control/:id', [authJwt.verifyToken], async (req, res) => {
     })
   } catch (err) {
     console.log(err)
-    res.status(400).send({error: true, message: `Couldn't get onboard control system`})
+    res.status(400).send({error: true, message: `Не удалось получить информацию о бортовой системе контроля`})
   }
 })
 
@@ -237,10 +236,10 @@ router.put('/onboard_control/:id', [authJwt.verifyToken], async (req, res) => {
     const id = req.params.id
     const { model, brake_linings_status, engine_oil_level, brake_fluid_level, transmission_fluid_level, coolant_level, filter_status, instrument_lamps_status } = req.body
     const osc = await db.updateOSC(id, model, brake_linings_status, engine_oil_level, brake_fluid_level, transmission_fluid_level, coolant_level, filter_status, instrument_lamps_status)
-    res.status(200).send(osc)
+    res.status(200).send({error: false, message: `Данные успешно обновлены`})
   } catch (err) {
     console.log(err)
-    res.status(400).send({error: true, message: `Couldn't put onboard control system`})
+    res.status(400).send({error: true, message: `Не удалось обновить данные`})
   }
 })
 
@@ -248,7 +247,7 @@ router.get('/measuring_device/:id', [authJwt.verifyToken], async (req, res) => {
   try {
     const id = req.params.id
     const mds = await db.getMDS(id)
-    if (mds === null) throw `Couldn't get measuring device`
+    if (mds === null) throw `Не удалось получить информацию о системе измерительных приборов`
     res.status(200).send({
       id: mds.id,
       model: mds.model,
@@ -258,7 +257,7 @@ router.get('/measuring_device/:id', [authJwt.verifyToken], async (req, res) => {
     })
   } catch (err) {
     console.log(err)
-    res.status(400).send({error: true, message: `Couldn't get measuring device`})
+    res.status(400).send({error: true, message: `Не удалось получить информацию о системе измерительных приборов`})
   }
 })
 
@@ -267,10 +266,10 @@ router.put('/measuring_device/:id', [authJwt.verifyToken], async (req, res) => {
     const id = req.params.id
     const { model, fuel_quantity, coolant_temperature, oil_pressure } = req.body
     const mds = await db.updateMDS(id, model, fuel_quantity, coolant_temperature, oil_pressure)
-    res.status(200).send(mds)
+    res.status(200).send({error: false, message: `Данные успешно обновлены`})
   } catch (err) {
     console.log(err)
-    res.status(400).send({error: true, message: `Couldn't put measuring device`})
+    res.status(400).send({error: true, message: `Не удалось обновить данные`})
   }
 })
 
