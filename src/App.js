@@ -1,24 +1,25 @@
 import React from "react"
-import { BrowserRouter, Router, Routes, Route } from "react-router-dom"
-import CarDetails from "./pages/carDetails"
-import PasswordReset from "./pages/PasswordReset"
+import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Profile from "./pages/Profile"
 import Information from "./pages/Information"
-import Detail from "./pages/Detail"
-import Form from "./pages/Form"
-import Dashboard from "./pages/Dashboard"
+import Login from "./pages/Login"
 import NotFound from "./pages/NotFound"
+import Car from "./pages/Car"
+import RouteComputer from "./pages/RouteComputer"
+import OnboardControl from "./pages/OnboardControl"
+import MeasuringDeviceSystem from "./pages/MeasuringSystem"
 
 const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/details" element={<CarDetails />} />
-        <Route path="/" element={<Dashboard />} />
+        <Route path="/" element={<Login />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/car/:id" element={<Car />} />
+        <Route path="/rc/:id" element={<RouteComputer />} />
+        <Route path="/bsc/:id" element={<OnboardControl />} />
+        <Route path="/mds/:id" element={<MeasuringDeviceSystem />} />
         <Route path="/information" element={<Information />} />
-        <Route path="/detail/:id" element={<Detail />} />
-        <Route path="/add" element={<Form />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
