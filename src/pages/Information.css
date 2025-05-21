@@ -1,0 +1,132 @@
+:root {
+    --dark-blue: #1b2631;
+    --light-blue: #2e3e4e;
+    --text-gray: #f8f9fa;
+    --accent-blue: #17a2b8;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --input-bg: #34495e;
+    --input-color: #fff;
+   }
+   
+   .document-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding: 40px;
+    background-color: var(--dark-blue);
+    color: var(--text-gray);
+   }
+   
+   .header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 40px;
+   }
+   
+   .header-logo {
+    margin-bottom: 20px;
+   }
+   
+   h1, h2 {
+    text-align: center;
+   }
+   
+   h1 {
+    color: var(--accent-blue);
+    font-size: 28px;
+   }
+   
+   .date {
+    text-align: right;
+    margin-top: 20px;
+   }
+   
+   .content {
+    max-width: 800px;
+    margin: 0 auto;
+   }
+   
+   h3 {
+    color: var(--accent-blue);
+    margin-top: 40px;
+   }
+   
+   h4 {
+    color: #fff;
+    margin-top: 20px;
+   }
+   
+   p {
+    line-height: 1.6;
+    margin-bottom: 15px;
+   }
+   
+   ul, ol {
+    padding-left: 20px;
+    margin-bottom: 15px;
+   }
+   
+   li {
+    margin-bottom: 5px;
+   }
+   
+   table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+   }
+   
+   th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid var(--light-blue);
+   }
+   
+   th {
+    background-color: var(--light-blue);
+    color: var(--text-gray);
+   }
+   
+   .policy-section {
+    margin-bottom: 40px;
+   }
+   
+   .footer {
+    margin-top: 40px;
+    padding: 20px;
+    background-color: var(--light-blue);
+    border-radius: 8px;
+   }
+   
+   .footer p {
+    margin-bottom: 10px;
+   }
+   
+   @media (max-width: 768px) {
+    .document-container {
+    padding: 20px;
+    }
+   
+    .content {
+    max-width: 100%;
+    }
+   }
+   
+   @media (max-width: 480px) {
+    h1 {
+    font-size: 24px;
+    }
+   
+    h2 {
+    font-size: 20px;
+    }
+   
+    h3 {
+    font-size: 18px;
+    }
+   
+    h4 {
+    font-size: 16px;
+    }
+   }
