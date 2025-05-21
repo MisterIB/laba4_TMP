@@ -30,9 +30,9 @@
     flex-direction: column;
 }
 
-input[type="text"],
-input[type="email"],
-input[type="password"] {
+.Register input[type="text"],
+.Register input[type="email"],
+.Register input[type="password"] {
     padding: 10px;
     margin-bottom: 15px;
     background-color: var(--light-blue);
@@ -42,7 +42,7 @@ input[type="password"] {
     font-size: 16px;
 }
 
-input[type="submit"] {
+.SignIn input[type="submit"], .Register input[type="submit"] {
     padding: 10px 20px;
     margin-top: 15px;
     background-color: var(--accent-blue);
@@ -54,7 +54,7 @@ input[type="submit"] {
     transition: background-color 0.2s ease;
 }
 
-input[type="submit"]:hover {
+.SignIn input[type="submit"]:hover, .Register input[type="submit"]:hover {
     background-color: darken(var(--accent-blue), 15%);
 }
 
