@@ -51,7 +51,7 @@ h2::after {
     margin-top: 20px;
 }
 
-.button {
+.button, .delete-button, .out-button {
     display: inline-block;
     padding: 10px 20px;
     margin: 5px;
@@ -66,12 +66,12 @@ h2::after {
     z-index: 1;
 }
 
-.button:hover {
+.button:hover, .delete-button:hover, .out-button:hover {
     background-color: darken(var(--accent-blue), 15%);
     transform: scale(1.02);
 }
 
-.button:active {
+.button:active, .delete-button:active, .out-button:active {
     transform: scale(0.98);
 }
 
@@ -102,4 +102,68 @@ h2::after {
 
 .user-info:hover::before {
     opacity: 0.2;
+}
+
+.cars-list {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.car-item {
+    padding: 15px;
+    background-color: var(--light-blue);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px var(--shadow-color);
+    color: var(--text-gray);
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.car-item::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent 50%, var(--dark-blue) 50%);
+    opacity: 0.1;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+
+.car-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+.car-item:hover::before {
+    opacity: 0.2;
+}
+
+.car-item p {
+    margin: 5px 0;
+    font-size: 16px;
+}
+
+.car-item strong {
+    color: var(--accent-blue);
+}
+
+.car-item a {
+    text-decoration: none;
+    color: var(--text-gray);
+}
+
+.car-item:hover a {
+    color: var(--accent-blue);
+}
+
+@media (max-width: 768px) {
+    .cars-list {
+        grid-template-columns: 1fr;
+    }
 }
