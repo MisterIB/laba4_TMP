@@ -1,35 +1,27 @@
-import React, { useState, useEffect } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
-import './Car.css';
+import React, { useState, useEffect } from "react"
+import { Link, useParams, useNavigate } from "react-router-dom"
+import axios from "axios"
+import './Car.css'
 
 const Car = () => {
-    const navigate = useNavigate();
-    const { id } = useParams();
-    const [car, setCar] = useState(null);
+    const navigate = useNavigate()
+    const { id } = useParams()
+    const [car, setCar] = useState('')
 
     useEffect(() => {
         const fetchCar = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/cars/${id}`, {
-                    withCredentials: true,
-                    credentials: 'include'
-                });
+                const response = await axios.get(`http://217.71.129.139:5735/cars/${id}`, {withCredentials: true, credentials: 'include'})
                 setCar(response.data);
             } catch (err) {
-                console.error('Ошибка при получении данных автомобиля');
-                navigate('/profile');
+                alert('Ошибка при получении данных автомобиля')
+                console.log(err)
+                navigate('/profile')
             }
         };
 
-        if (id) {
-            fetchCar();
-        }
-    }, [id]);
-
-    if (!car) {
-        return <div>Загрузка данных...</div>;
-    }
+        fetchCar()
+    }, [id])
 
     return (
         <div className="car-details-container">
@@ -48,7 +40,7 @@ const Car = () => {
                 </div>
             </div>
 
-            <div className="buttons-container">
+            <div className="buttons-container-car">
                 <Link to={`/rc/${car.id}`} className="button">
                     Маршрутный компьютер
                 </Link>
@@ -69,4 +61,4 @@ const Car = () => {
     );
 };
 
-export default Car;
+export default Car
